@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.RequestDispatcher;
 
 /**
 * Servlet implementation class EmployeeServlet
@@ -55,12 +56,21 @@ public class EmployeeServlet extends HttpServlet {
 			// Закрываем выборку и соединение с БД
 			rs.close();
 			con.close();
+			/*
 			// Выводим информацию о найденных сотрудниках
 			PrintWriter out = response.getWriter();
 			out.println("Найденные сотрудники<br>");
 			for (Employee emp : employees) {
 				out.print(emp.getFirstName() + " " + emp.getLastName() + " " + emp.getDesignation() + " " + emp.getPhone() + "<br>");
 			}
+			*/
+			
+			// Помещение результатов в параметр запроса employeesFound
+			request.setAttribute("employeesFound", employees);
+			// Перенаправление http-запроса на страницу index.jsp
+			RequestDispatcher dispatcher = getServletContext()
+			.getRequestDispatcher("/index.jsp");
+			dispatcher.forward(request, response);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			throw new ServletException(ex);
